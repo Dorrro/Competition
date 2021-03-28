@@ -9,10 +9,12 @@ import {HttpClient} from '@angular/common/http';
 })
 export class LeaderboardComponent implements OnInit {
   leaderboardEntries: LeaderboardEntry[] | undefined;
+  isLoading = true;
 
   constructor(httpClient: HttpClient) {
     httpClient.get<LeaderboardEntry[]>('/api/leaderboard').subscribe(e => {
       this.leaderboardEntries = e;
+      this.isLoading = false;
     });
   }
 

@@ -17,6 +17,7 @@ export class SolveComponent implements OnInit {
   solutionForm: FormGroup;
   tasks: Task[] | undefined = undefined;
   selectedTask: Task | undefined = undefined;
+  isLoading = true;
 
   constructor(private httpClient: HttpClient) {
     this.solutionForm = new FormGroup({
@@ -34,6 +35,7 @@ export class SolveComponent implements OnInit {
 
     this.httpClient.get<Task[]>('api/tasks').subscribe(t => {
       this.tasks = t;
+      this.isLoading = false;
     });
   }
 
@@ -61,6 +63,8 @@ export class SolveComponent implements OnInit {
       return;
     }
 
+    this.isLoading = true;
+
     const solutionRequest: SolutionRequest = {
       codingLanguageId: cSharpId,
       code: this.solutionControl?.value,
@@ -74,6 +78,7 @@ export class SolveComponent implements OnInit {
       })
     ).subscribe(result => {
       alert(JSON.stringify(result));
+      this.isLoading = false;
     });
   }
 }

@@ -7,12 +7,14 @@ import { SolveComponent } from './solve/solve.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SolveComponent,
-    LeaderboardComponent
+    LeaderboardComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
