@@ -1,0 +1,11 @@
+{
+  "/api/*": {
+    "target": "TBD",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/compiler/*": {
+    "target": "https://rextester.com/rundotnet/api",
+    "secure": false
+  }
+}
