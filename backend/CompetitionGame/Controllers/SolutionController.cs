@@ -1,7 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CompetitionGame.Data;
 using CompetitionGame.Data.Models;
+using CompetitionGame.Models;
+using CompetitionGame.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,10 +13,12 @@ namespace CompetitionGame.Controllers
     public class SolutionController : ControllerBase
     {
         private readonly CompetitionGameContext _context;
+        private readonly ISolutionVerifier _solutionVerifier;
 
-        public SolutionController(CompetitionGameContext context)
+        public SolutionController(CompetitionGameContext context, ISolutionVerifier solutionVerifier)
         {
             _context = context;
+            _solutionVerifier = solutionVerifier;
         }
 
         [HttpPost]
@@ -42,7 +45,12 @@ namespace CompetitionGame.Controllers
                 return BadRequest(ModelState);
             }
 
-            // TODO: request compiler
+            var verificationResult = await _solutionVerifier.Verify(request.Code, task.Input, task.ExpectedOutput);
+            if (!verificationResult.IsSuccessful)
+            {
+                ModelState.AddModelError(nameof(request.Code), verificationResult.Error);
+                return BadRequest(ModelState);
+            }
 
             var entry = await _context.Solutions.AddAsync(new Solution
             {
@@ -56,19 +64,5 @@ namespace CompetitionGame.Controllers
 
             return Ok(entry.Entity.Id);
         }
-    }
-
-    public class SolutionRequest
-    {
-        [Required]
-        public string User { get; set; }
-
-        [Required]
-        public string Code { get; set; }
-
-        public int CodingLanguageId { get; set; }
-
-        [Required]
-        public int TaskId { get; set; }
     }
 }

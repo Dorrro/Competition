@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using CompetitionGame.Data;
+using CompetitionGame.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,11 +37,5 @@ namespace CompetitionGame.Controllers
                     SolvedTasks = g.Select(s => s.TaskName)
                 });
         }
-    }
-
-    public class LeaderboardEntry
-    {
-        public string Name { get; set; }
-        public IEnumerable<string> SolvedTasks { get; set; }
     }
 }

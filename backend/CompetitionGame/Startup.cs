@@ -1,4 +1,5 @@
 using CompetitionGame.Data;
+using CompetitionGame.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,8 @@ namespace CompetitionGame
         {
             services.AddDbContext<CompetitionGameContext>(opt => opt.UseInMemoryDatabase("CompetitionGame"));
             services.AddControllers();
+            services.AddHttpClient();
+            services.AddScoped<ISolutionVerifier, RextesterSolutionVerifier>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
