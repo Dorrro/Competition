@@ -1,4 +1,4 @@
-<app-spinner *ngIf="isLoading"></app-spinner>
+<app-spinner *ngIf="isLoading$ | async"></app-spinner>
 
 <table class="table">
   <thead>
@@ -9,7 +9,7 @@
     </tr>
   </thead>
   <tbody>
-    <ng-container *ngFor="let entry of leaderboardEntries; index as i">
+    <ng-container *ngFor="let entry of leaderboardEntries$ | async; index as i">
       <tr>
         <th scope="row">{{i + 1}}</th>
         <td>{{entry.name}}</td>

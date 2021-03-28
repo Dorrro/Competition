@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
-import {catchError} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 import {of} from 'rxjs';
-import {SolutionRequest} from '../../models/SolutionRequest';
-import {Task} from '../../models/Task';
+import {SolutionRequest} from '../../../models/SolutionRequest';
+import {Task} from '../../../models/Task';
 
 const cSharpId = 1;
 
@@ -73,8 +73,11 @@ export class SolveComponent implements OnInit {
     };
 
     this.httpClient.post('api/solution', solutionRequest).pipe(
+      map(_ => {
+        return { isSuccessful: true };
+      }),
       catchError(err => {
-        return of(null);
+        return of({ isSuccessful: false, error: err});
       })
     ).subscribe(result => {
       alert(JSON.stringify(result));

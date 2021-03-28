@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {SolveComponent} from './solve/solve.component';
-import {LeaderboardComponent} from './leaderboard/leaderboard.component';
+import {SolveComponent} from './components/solve/solve.component';
+import {LeaderboardComponent} from './components/leaderboard/leaderboard.component';
 
 const routes: Routes = [
   {

@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace CompetitionGame
+namespace Rextester
 {
     public class Program
     {
@@ -33,7 +33,7 @@ namespace CompetitionGame
             var N = Console.In.ReadLine();
 
             //Your code goes here
-            Console.WriteLine(""Hello, world!\"");
+            Console.WriteLine(""Hello, world!"");
         }
     }
 }" };
@@ -47,7 +47,7 @@ namespace CompetitionGame
                 Id = 1,
                 Name = "Simple Fibonacci",
                 Description = "Write a program that based on the given input number (N) returns the N-th number from the Fibonacci's sequence",
-                ExpectedOutput = "6765",
+                ExpectedOutput = "6765\r\n",
                 Input = "20",
                 SampleCodes = new List<SampleCode>
                 {
