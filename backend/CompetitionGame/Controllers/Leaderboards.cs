@@ -33,7 +33,7 @@ namespace CompetitionGame.Controllers
                 .Select(g => new LeaderboardEntry
                 {
                     Name = g.Key,
-                    SolvedTaks = g.Select(s => s.TaskName)
+                    SolvedTasks = g.Select(s => s.TaskName)
                 });
         }
     }
@@ -41,6 +41,6 @@ namespace CompetitionGame.Controllers
     public class LeaderboardEntry
     {
         public string Name { get; set; }
-        public IEnumerable<string> SolvedTaks { get; set; }
+        public IEnumerable<string> SolvedTasks { get; set; }
     }
 }

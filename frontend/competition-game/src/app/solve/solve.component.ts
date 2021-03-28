@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {catchError} from 'rxjs/operators';
 import {of} from 'rxjs';
+import {SolutionRequest} from '../../models/SolutionRequest';
+import {Task} from '../../models/Task';
+
+const cSharpId = 1;
 
 @Component({
   selector: 'app-solve',
@@ -11,12 +15,25 @@ import {of} from 'rxjs';
 })
 export class SolveComponent implements OnInit {
   solutionForm: FormGroup;
+  tasks: Task[] | undefined = undefined;
+  selectedTask: Task | undefined = undefined;
 
   constructor(private httpClient: HttpClient) {
     this.solutionForm = new FormGroup({
       name: new FormControl('', Validators.required),
       task: new FormControl(null, Validators.required),
       solution: new FormControl('', Validators.required)
+    });
+
+    this.taskControl?.valueChanges.subscribe((taskId: number) => {
+      taskId = Number(taskId);
+      this.selectedTask = this.tasks?.find(t => t.id === taskId);
+      const sampleCode = this.selectedTask?.sampleCodes.find(c => c.codingLanguage.id === cSharpId)?.code;
+      this.solutionControl?.setValue(sampleCode);
+    });
+
+    this.httpClient.get<Task[]>('api/tasks').subscribe(t => {
+      this.tasks = t;
     });
   }
 
@@ -36,19 +53,22 @@ export class SolveComponent implements OnInit {
   }
 
   onFormSubmit(): void {
-    this.solutionForm.markAsDirty();
-    if (!this.solutionControl?.valid) {
+    this.nameControl?.markAsDirty();
+    this.taskControl?.markAsDirty();
+    this.solutionControl?.markAsDirty();
+
+    if (!this.solutionForm.valid) {
       return;
     }
 
-    const compileOptions = {
-      LanguageChoice: 1,
-      Program: this.solutionControl.value,
-      Input: '1, 2',
-      CompilerArgs: ''
+    const solutionRequest: SolutionRequest = {
+      codingLanguageId: cSharpId,
+      code: this.solutionControl?.value,
+      taskId: this.selectedTask?.id || 0,
+      user: this.nameControl?.value
     };
 
-    this.httpClient.post('compiler', compileOptions).pipe(
+    this.httpClient.post('api/solution', solutionRequest).pipe(
       catchError(err => {
         return of(null);
       })

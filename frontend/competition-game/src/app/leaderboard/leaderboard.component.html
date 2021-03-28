@@ -1,1 +1,18 @@
-<p>leaderboard works!</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Tasks</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let entry of leaderboardEntries; index as i">
+      <tr>
+        <th scope="row">{{i + 1}}</th>
+        <td>{{entry.name}}</td>
+        <td>{{entry.solvedTasks?.join(', ')}}</td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>

@@ -3,7 +3,7 @@
     <label for="name" class="col-2 col-form-label">Name</label>
     <div class="col-10">
       <input formControlName="name" id="name" class="form-control"/>
-      <div *ngIf="nameControl && nameControl.invalid && (nameControl.dirty || nameControl.touched || solutionForm.dirty)"
+      <div *ngIf="nameControl && nameControl.invalid && (nameControl.dirty || nameControl.touched)"
            class="invalid-feedback" style="display: block">
         Name is required.
       </div>
@@ -13,25 +13,27 @@
     <label for="task" class="col-2 col-form-label">Task</label>
     <div class="col-10">
       <select formControlName="task" id="task" class="form-control">
-        <option>test</option>
+        <ng-container *ngFor="let task of tasks">
+          <option [value]="task.id">{{task.name}}</option>
+        </ng-container>
       </select>
-      <div *ngIf="taskControl && taskControl.invalid && (taskControl.dirty || taskControl.touched || solutionForm.dirty)"
+      <div *ngIf="taskControl && taskControl.invalid && (taskControl.dirty || taskControl.touched)"
            class="invalid-feedback" style="display: block">
         Task is required.
       </div>
     </div>
   </div>
-  <div class="form-group row p-2">
+  <div class="form-group row p-2" *ngIf="taskControl?.value">
     <span class="col-2 col-form-label">Description</span>
     <div class="col-10">
-      <p>Long description</p>
+      <p>{{selectedTask?.description}}</p>
     </div>
   </div>
   <div class="form-group row p-2">
     <label for="solution" class="col-2 col-form-label">Solution</label>
     <div class="col-10">
       <textarea formControlName="solution" id="solution" class="form-control"></textarea>
-      <div *ngIf="solutionControl && solutionControl.invalid && (solutionControl.dirty || solutionControl.touched || solutionForm.dirty)"
+      <div *ngIf="solutionControl && solutionControl.invalid && (solutionControl.dirty || solutionControl.touched)"
            class="invalid-feedback" style="display: block">
         Solution is required.
       </div>
@@ -39,7 +41,7 @@
   </div>
   <div class="form-group row p-2">
     <div class="offset-2">
-      <button class="btn btn-primary" (click)="onFormSubmit()">Submit</button>
+      <button class="btn btn-primary" (click)="onFormSubmit()" [disabled]="!solutionForm.valid">Submit</button>
     </div>
   </div>
 </form>

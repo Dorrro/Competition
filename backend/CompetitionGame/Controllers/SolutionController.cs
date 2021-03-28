@@ -35,6 +35,13 @@ namespace CompetitionGame.Controllers
                 return BadRequest(ModelState);
             }
 
+            var solution = await _context.Solutions.FirstOrDefaultAsync(s => s.User == request.User && s.Task == task);
+            if (solution != null)
+            {
+                ModelState.AddModelError(nameof(request.TaskId), $"User has already submitted a solution for task {request.TaskId}");
+                return BadRequest(ModelState);
+            }
+
             // TODO: request compiler
 
             var entry = await _context.Solutions.AddAsync(new Solution
